@@ -416,3 +416,5 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+LS_Info_App/.idea/.idea.LS_Info_App/.idea/
