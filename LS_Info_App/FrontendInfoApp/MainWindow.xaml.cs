@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FrontendInfoApp.Pages;
 
 namespace FrontendInfoApp
 {
@@ -18,7 +19,49 @@ namespace FrontendInfoApp
     {
         public MainWindow()
         {
-            InitializeComponent();
-        }
+            
+          InitializeComponent();
+          var fp = new MainPage();
+          NavFrame.Navigate(fp);
     }
+
+        public void SetPage(Page nextPage)
+        {
+          NavFrame.Navigate(nextPage);
+        }
+
+        private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+          if (e.ChangedButton == MouseButton.Left)
+            this.DragMove();
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+          this.Close();
+        }
+
+        private void Minimize_Click(object sender, RoutedEventArgs e)
+        {
+          this.WindowState = WindowState.Minimized;
+        }
+
+        private void Maximize_Click(object sender, RoutedEventArgs e)
+        {
+          if (this.WindowState == WindowState.Maximized)
+            this.WindowState = WindowState.Normal;
+          else
+            this.WindowState = WindowState.Maximized;
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+          if (this.WindowState == WindowState.Maximized)
+            ((Border)this.Content).CornerRadius = new CornerRadius(0);
+          else
+            ((Border)this.Content).CornerRadius = new CornerRadius(20);
+        }
+
+        
+  }
 }
