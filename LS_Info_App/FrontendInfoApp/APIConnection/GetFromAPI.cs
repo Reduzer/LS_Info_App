@@ -1,5 +1,5 @@
-﻿using Entities.DTOs.GET;
-using FrontendInfoApp.APIConnection.Interfaces;
+﻿using Common;
+using Entities.DTOs.GET;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.IO;
@@ -8,12 +8,12 @@ using System.Net.Http;
 using System.Text;
 
 namespace FrontendInfoApp.APIConnection {
-    internal class GetFromAPI : IGet {
+    internal class GetFromAPI {
         private HttpClientHandler oHandler;
         private HttpClient oClient;
         private Guid oSessionToken;
 
-        private const string csAPILink = "http://localhost:5193/api/";
+        private const string csAPILink = "https://localhost:5193/api/";
 
         public GetFromAPI() {
             oHandler = new HttpClientHandler();
@@ -33,7 +33,7 @@ namespace FrontendInfoApp.APIConnection {
             List<GetWeatherDataDTO> voWeatherData = new List<GetWeatherDataDTO>();
 
             try {
-                using (HttpRequestMessage request = PrepareRequest(csAPILink + "Attacks/Get")) {
+                using (HttpRequestMessage request = PrepareRequest(csAPILink)) {
                     using (HttpResponseMessage response = oClient.GetAsync(request.RequestUri).Result) {
                         if (response.StatusCode == HttpStatusCode.OK) {
                             using (Stream stream = response.Content.ReadAsStream()) {

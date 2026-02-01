@@ -1,0 +1,6 @@
+services:
+  backendinfoapp:
+    image: ${DOCKER_REGISTRY-}backendinfoapp
+    build:
+      context: .
+      dockerfile: BackendInfoApp/Dockerfile

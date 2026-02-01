@@ -3,7 +3,7 @@ using Entities.Entities;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BackendInfoApp.Repositories {
-    public class WeatherDataRepository {
+    public class WeatherDataRepository : IDisposable {
         private InfoAppDbContext oContext;
         private bool bDisposedValue;
 
@@ -15,7 +15,7 @@ namespace BackendInfoApp.Repositories {
             Dispose();
         }
 
-        public WeatherDataEntity GetByID(int nID) {
+        public WeatherDataEntity? GetByID(int nID) {
             return oContext.WeatherData.Find(nID);
         }
 
