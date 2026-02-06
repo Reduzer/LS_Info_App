@@ -9,6 +9,55 @@
       Title="MainPage">
 
     <Grid>
-        
+
+        <Grid.Background>
+            <LinearGradientBrush>
+                <GradientStop Offset="0.0" Color="#72C6EF" />
+                <GradientStop Offset="1.0" Color="#004E8F" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="100*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100*" />
+            <RowDefinition Height="100*" />
+            <RowDefinition Height="100*" />
+            <RowDefinition Height="100*" />
+            <RowDefinition Height="100*" />
+        </Grid.RowDefinitions>
+
+        <Border CornerRadius="7" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Margin="4" BorderBrush="White">
+
+            <Border.Background>
+                <SolidColorBrush Color="White" Opacity="0.6"/>
+            </Border.Background>
+
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100*" />
+                    <RowDefinition Height="100*" />
+                    <RowDefinition Height="100*" />
+                    <RowDefinition Height="100*" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100*" />
+                    <ColumnDefinition Width="100*" />
+                </Grid.ColumnDefinitions>
+
+
+
+
+            </Grid>
+            
+                     
+        </Border>
+
     </Grid>
 </Page>
