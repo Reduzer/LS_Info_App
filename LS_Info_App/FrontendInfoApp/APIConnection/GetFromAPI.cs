@@ -1,4 +1,5 @@
-﻿using Entities.DTOs.GET;
+﻿using Entities;
+using Entities.DTOs.GET;
 using FrontendInfoApp.APIConnection.Interfaces;
 using Newtonsoft.Json;
 using System.Diagnostics;
