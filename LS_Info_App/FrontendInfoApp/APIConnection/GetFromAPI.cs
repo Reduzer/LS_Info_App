@@ -34,7 +34,7 @@ namespace FrontendInfoApp.APIConnection {
             List<GetWeatherDataDTO> voWeatherData = new List<GetWeatherDataDTO>();
 
             try {
-                using (HttpRequestMessage request = PrepareRequest(csAPILink + "Attacks/Get")) {
+                using (HttpRequestMessage request = PrepareRequest(csAPILink + "GetRecentWeatherData")) {
                     using (HttpResponseMessage response = oClient.GetAsync(request.RequestUri).Result) {
                         if (response.StatusCode == HttpStatusCode.OK) {
                             using (Stream stream = response.Content.ReadAsStream()) {

@@ -2,10 +2,7 @@
 using BackendInfoApp.Mapper;
 using BackendInfoApp.Repositories;
 using Entities.DTOs.GET;
-using Entities.DTOs.POST;
-using Entities.DTOs.PUT;
 using Entities.Entities;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BackendInfoApp.Services {
     public class WeatherDataService {
@@ -15,23 +12,6 @@ namespace BackendInfoApp.Services {
         public WeatherDataService(InfoAppDbContext oContext) {
             oRepository = new WeatherDataRepository(oContext);
             oMapper = new WeatherDataMapper();
-        }
-
-        public bool Post(PostWeatherDataDTO oDTO) {
-            WeatherDataEntity oEntity = oMapper.PostDTOToEntity(oDTO);
-            int nID = oRepository.PostWeatherDataService(oEntity);
-            if (nID < 1) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        public WeatherDataEntity Put(PutWeatherDataDTO oDTO) {
-            WeatherDataEntity oEntity = oMapper.PutDTOToEntity(oDTO);
-            oRepository.PutWeatherDataService(oEntity);
-
-            return oRepository.GetByID(oEntity.nId);
         }
 
         public List<GetWeatherDataDTO> GetAll() {

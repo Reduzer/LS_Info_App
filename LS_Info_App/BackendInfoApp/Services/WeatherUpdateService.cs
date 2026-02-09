@@ -1,5 +1,7 @@
-using BackendInfoApp.Controllers;
 using BackendInfoApp.DB;
+using Entities.Entities;
+using Newtonsoft.Json.Linq;
+using System.Text.Json;
 
 namespace BackendInfoApp.Services {
     public class WeatherUpdateService : BackgroundService {
@@ -33,9 +35,8 @@ namespace BackendInfoApp.Services {
             try {
                 using var scope = _serviceProvider.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<InfoAppDbContext>();
-                var controller = new WeatherDataController(dbContext);
 
-                var result = controller.GetWeatherFromApi();
+                var result = GetWeatherFromApi();
                 if (result != null) {
                     _logger.LogInformation($"Wetterdaten aktualisiert: {result.sCity}");
                 } else {
@@ -46,6 +47,60 @@ namespace BackendInfoApp.Services {
             }
 
             await Task.CompletedTask;
+        }
+
+        public WeatherDataEntity? GetWeatherFromApi() {
+            string sJSON = System.IO.File.ReadAllText("config.json");
+            JObject oConfig = JObject.Parse(sJSON);
+            string sCity = oConfig["WeatherApi"]["City"].ToString();
+            string sApiKey = oConfig["WeatherApi"]["ApiKey"].ToString();
+
+            if (string.IsNullOrWhiteSpace(sCity)) {
+                throw new ArgumentException("sCity must be provided", nameof(sCity));
+            }
+
+            if (string.IsNullOrWhiteSpace(sApiKey)) {
+                throw new ArgumentException("sApiKey must be provided", nameof(sApiKey));
+            }
+
+            string sUrl = $"{oConfig["WeatherApi"]["BaseUrl"]}{Uri.EscapeDataString(sApiKey)}&q={Uri.EscapeDataString(sCity)}&aqi=no";
+
+            try {
+                string sJson;
+
+                using (HttpClient oClient = new HttpClient { Timeout = TimeSpan.FromSeconds(10) }) {
+                    var oResponse = oClient.GetAsync(sUrl).GetAwaiter().GetResult();
+
+                    if (!oResponse.IsSuccessStatusCode) {
+                        return null;
+                    }
+                    sJson = oResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                }
+                using var oDoc = JsonDocument.Parse(sJson);
+                var oRoot = oDoc.RootElement;
+
+                if (!oRoot.TryGetProperty("location", out var oLocation) || !oRoot.TryGetProperty("current", out var oCurrent)) {
+                    return null;
+                }
+
+                string sResolvedCity = oLocation.GetProperty("name").GetString() ?? sCity;
+                string sCountry = oLocation.GetProperty("country").GetString() ?? string.Empty;
+                double dTempC = oCurrent.GetProperty("temp_c").GetDouble();
+                string sCondition = oCurrent.GetProperty("condition").GetProperty("text").GetString() ?? string.Empty;
+                double dWindKph = oCurrent.GetProperty("wind_kph").GetDouble();
+                string sWindDir = oCurrent.GetProperty("wind_dir").GetString() ?? string.Empty;
+                double dFeelsLikeC = oCurrent.GetProperty("feelslike_c").GetDouble();
+
+                WeatherDataEntity oEntity = new WeatherDataEntity(0, sResolvedCity, sCountry, dTempC, sCondition, dWindKph, sWindDir, dFeelsLikeC);
+
+                return oEntity;
+            } catch (Newtonsoft.Json.JsonException) {
+                return null;
+            } catch (HttpRequestException) {
+                return null;
+            } catch (Exception) {
+                return null;
+            }
         }
     }
 }
