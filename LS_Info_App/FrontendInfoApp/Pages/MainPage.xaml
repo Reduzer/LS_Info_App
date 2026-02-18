@@ -39,6 +39,7 @@
                 Grid.Row="0"
                 Grid.RowSpan="3"
                 Grid.Column="0"
+                Grid.ColumnSpan="2"
                 Margin="6"
                 BorderBrush="White"
                 CornerRadius="7">
@@ -60,10 +61,19 @@
                     <ColumnDefinition Width="100*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{Binding sCity}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center"/>
 
-                <Image Source="{Binding IconUrl}" Width="80" Height="80"/>
-                <TextBlock Text="{Binding Temperature}" FontSize="54" VerticalAlignment="Center" Margin="10,0"/>
+                <DataGrid ItemsSource="{Binding WeatherItems}" AutoGenerateColumns="False" IsReadOnly="True" Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="2">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Stadt" Binding="{Binding sCity}" />
+                        <DataGridTextColumn Header="Land" Binding="{Binding sCountry}" />
+                        <DataGridTextColumn Header="Temp °C" Binding="{Binding dTempC}" />
+                        <DataGridTextColumn Header="Zustand" Binding="{Binding sConditionText}" />
+                        <DataGridTextColumn Header="Wind kph" Binding="{Binding dWindKph}" />
+                        <DataGridTextColumn Header="Wind Dir" Binding="{Binding sWindDir}" />
+                        <DataGridTextColumn Header="FeelsLike °C" Binding="{Binding dFeelsLikeC}" />
+                        <DataGridTextColumn Header="Recorded" Binding="{Binding oRecordedAt}" />
+                    </DataGrid.Columns>
+                </DataGrid>
 
             </Grid>
         </Border>
