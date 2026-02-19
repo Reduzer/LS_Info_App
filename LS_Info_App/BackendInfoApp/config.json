@@ -1,10 +1,10 @@
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=db.ntywffnhzrxwchfzivnh.supabase.co;Database=postgres;Username=TsukiYami;Password=Ol%YMXZ6mTxa0*L1;SSL Mode=Require;Trust Server Certificate=true"
+    "DefaultConnection": "Host=localhost:5432;Database=postgres;Username=Admin;Password=Ol%YMXZ6mTxa0*L1;SSL Mode=Require;Trust Server Certificate=true"
   },
   "WeatherApi": {
     "City": "Bremen",
-    "ApiKey": "c7247d0f2a104b26934110431261302",
+    "ApiKey": "50e9d5ad77e540c7a9f213153261802",
     "BaseUrl": "http://api.weatherapi.com/v1/current.json?key="
   }
 }

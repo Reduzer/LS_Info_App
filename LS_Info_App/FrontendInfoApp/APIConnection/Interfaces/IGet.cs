@@ -2,7 +2,7 @@
 
 namespace FrontendInfoApp.APIConnection.Interfaces {
     internal interface IGet {
-        public IEnumerable<GetWeatherDataDTO> WeatherData();
+        public GetWeatherDataDTO WeatherData();
 
         //public GetWeatherDataDTO GetWeatherDataDTO(long nID);
     }

@@ -1,6 +1,4 @@
 ﻿using BackendInfoApp.DB;
-using BackendInfoApp.Mapper;
-using BackendInfoApp.Repositories;
 using BackendInfoApp.Services;
 using Entities.DTOs.GET;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +16,8 @@ namespace BackendInfoApp.Controllers {
 
         [HttpGet("GetRecentWeatherData")]
         public IActionResult GetAllWeatherData() {
-            List<GetWeatherDataDTO> voWeatherData = oService.GetAll();
-            var oLatestWeatherData = voWeatherData.OrderByDescending(w => w.oRecordedAt).FirstOrDefault();
-            string sJsonReturn = JsonConvert.SerializeObject(oLatestWeatherData);
+            GetWeatherDataDTO oWeatherData = oService.GetLatest();
+            string sJsonReturn = JsonConvert.SerializeObject(oWeatherData);
             return Ok(sJsonReturn);
         }
     }

@@ -9,10 +9,11 @@ using System.Net.Http;
 using System.Text;
 
 namespace FrontendInfoApp.APIConnection {
-    internal class GetFromAPI : IGet {
+    public class GetFromAPI : IGet {
         private HttpClientHandler oHandler;
         private HttpClient oClient;
         private Guid oSessionToken;
+        private GetWeatherDataDTO oWeatherData;
 
         private const string csAPILink = "http://localhost:5193/api/";
 
@@ -30,21 +31,19 @@ namespace FrontendInfoApp.APIConnection {
             oHandler.Dispose();
         }
 
-        public IEnumerable<GetWeatherDataDTO> WeatherData() {
-            List<GetWeatherDataDTO> voWeatherData = new List<GetWeatherDataDTO>();
-
+        public GetWeatherDataDTO WeatherData() {
             try {
                 using (HttpRequestMessage request = PrepareRequest(csAPILink + "GetRecentWeatherData")) {
                     using (HttpResponseMessage response = oClient.GetAsync(request.RequestUri).Result) {
                         if (response.StatusCode == HttpStatusCode.OK) {
                             using (Stream stream = response.Content.ReadAsStream()) {
                                 using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8)) {
-                                    string MainJson = "{ 'Main': " + streamReader.ReadToEnd() + "}";
+                                    string MainJson = streamReader.ReadToEnd();
                                     if (MainJson == null) {
                                         throw new Exception("no Text found");
                                     }
-                                    GetWeatherDataDTO[] weatherdata = JsonConvert.DeserializeObject<GetWeatherDataDTO[]>(MainJson);
-                                    voWeatherData.AddRange(weatherdata);
+                                    GetWeatherDataDTO oWeatherDeserializedData = JsonConvert.DeserializeObject<GetWeatherDataDTO>(MainJson);
+                                    oWeatherData = oWeatherDeserializedData;
                                 }
                             }
                         }
@@ -54,7 +53,7 @@ namespace FrontendInfoApp.APIConnection {
                 Debug.Assert(false);
                 return null;
             }
-            return voWeatherData;
+            return oWeatherData;
         }
 
         private HttpRequestMessage PrepareRequest(string sURL) {
@@ -71,8 +70,5 @@ namespace FrontendInfoApp.APIConnection {
                 return null;
             }
         }
-
-    
-
     }
 }

@@ -16,21 +16,11 @@ namespace FrontendInfoApp.Pages
     /// <summary>
     /// Interaktionslogik für MainPage.xaml
     /// </summary>
-    public partial class MainPage : Page
-    {
+    public partial class MainPage : Page {
 
-        private readonly MainViewModel _vm = new();
+        /*private readonly MainViewModel _vm = new();
 
 
-        public MainPage()
-        {
-               
-            InitializeComponent();
-
-            DataContext = _vm;
-
-            Loaded += (_, __) => _vm.Load();           
-        }
 
 
         public class MainViewModel
@@ -47,9 +37,20 @@ namespace FrontendInfoApp.Pages
                     foreach (var item in data)
                         WeatherItems.Add(item);
             }
-
+        }*/
+        public MainPage() {
+            InitializeComponent();
+            LoadWeatherData();
         }
 
-
+        public void LoadWeatherData() {
+            try {
+                GetWeatherDataDTO weatherData = APIService.Instance.Get().WeatherData();
+                
+                City.Text = weatherData.sCity;
+            } catch (Exception ex) {
+                MessageBox.Show("Fehler beim Laden der Wetterdaten: " + ex.Message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }

@@ -15,15 +15,12 @@ namespace BackendInfoApp.Services {
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
             _logger.LogInformation("WeatherUpdateService gestartet");
-
-            // Beim Start sofort ausführen
             await UpdateWeatherData(stoppingToken);
 
-            // Dann stündlich wiederholen
-            using var timer = new PeriodicTimer(TimeSpan.FromSeconds(20));
+            using PeriodicTimer oTimer = new PeriodicTimer(TimeSpan.FromSeconds(10));
             
             try {
-                while (await timer.WaitForNextTickAsync(stoppingToken)) {
+                while (await oTimer.WaitForNextTickAsync(stoppingToken)) {
                     await UpdateWeatherData(stoppingToken);
                 }
             } catch (OperationCanceledException) {
@@ -33,12 +30,12 @@ namespace BackendInfoApp.Services {
 
         private async Task UpdateWeatherData(CancellationToken stoppingToken) {
             try {
-                using var scope = _serviceProvider.CreateScope();
-                var dbContext = scope.ServiceProvider.GetRequiredService<InfoAppDbContext>();
+                using var oScope = _serviceProvider.CreateScope();
+                var oDbContext = oScope.ServiceProvider.GetRequiredService<InfoAppDbContext>();
 
-                var result = GetWeatherFromApi();
-                if (result != null) {
-                    _logger.LogInformation($"Wetterdaten aktualisiert: {result.sCity}");
+                var oResult = GetWeatherFromApi();
+                if (oResult != null) {
+                    _logger.LogInformation($"Wetterdaten aktualisiert: {oResult.sCity}");
                 } else {
                     _logger.LogWarning("Wetterdaten konnten nicht aktualisiert werden");
                 }
@@ -50,7 +47,7 @@ namespace BackendInfoApp.Services {
         }
 
         public WeatherDataEntity? GetWeatherFromApi() {
-            string sJSON = System.IO.File.ReadAllText("config.json");
+            string sJSON = File.ReadAllText("config.json");
             JObject oConfig = JObject.Parse(sJSON);
             string sCity = oConfig["WeatherApi"]["City"].ToString();
             string sApiKey = oConfig["WeatherApi"]["ApiKey"].ToString();

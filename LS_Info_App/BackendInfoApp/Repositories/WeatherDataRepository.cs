@@ -19,8 +19,12 @@ namespace BackendInfoApp.Repositories {
             return oContext.WeatherData.Find(nID);
         }
 
-        public IEnumerable<WeatherDataEntity> GetWeatherDataService() {
+        public IEnumerable<WeatherDataEntity> GetAllWeatherDataService() {
             return oContext.WeatherData;
+        }
+
+        public WeatherDataEntity GetWeatherDataService() {
+            return oContext.WeatherData.OrderByDescending(w => w.nId).FirstOrDefault();
         }
 
         public int PostWeatherDataService(WeatherDataEntity oEntity) {

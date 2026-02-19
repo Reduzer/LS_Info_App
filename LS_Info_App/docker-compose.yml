@@ -1,0 +1,13 @@
+services:
+  backendinfoapp:
+    image: ${DOCKER_REGISTRY-}backendinfoapp
+    build:
+      context: .
+      dockerfile: BackendInfoApp/Dockerfile
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: Ol%YMXZ6mTxa0*L1
+    ports:
+      - "5432:5432"

@@ -62,18 +62,8 @@
                 </Grid.ColumnDefinitions>
 
 
-                <DataGrid ItemsSource="{Binding WeatherItems}" AutoGenerateColumns="False" IsReadOnly="True" Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="2">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Stadt" Binding="{Binding sCity}" />
-                        <DataGridTextColumn Header="Land" Binding="{Binding sCountry}" />
-                        <DataGridTextColumn Header="Temp °C" Binding="{Binding dTempC}" />
-                        <DataGridTextColumn Header="Zustand" Binding="{Binding sConditionText}" />
-                        <DataGridTextColumn Header="Wind kph" Binding="{Binding dWindKph}" />
-                        <DataGridTextColumn Header="Wind Dir" Binding="{Binding sWindDir}" />
-                        <DataGridTextColumn Header="FeelsLike °C" Binding="{Binding dFeelsLikeC}" />
-                        <DataGridTextColumn Header="Recorded" Binding="{Binding oRecordedAt}" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <TextBlock x:Name="City" Grid.Row="0" Grid.Column="0" Margin="6" FontSize="16" Background="Black" Foreground="White"/>
+                
 
             </Grid>
         </Border>
