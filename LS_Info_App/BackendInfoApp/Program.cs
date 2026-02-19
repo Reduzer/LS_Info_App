@@ -1,4 +1,4 @@
-using BackendInfoApp.DB;
+/*using BackendInfoApp.DB;
 using BackendInfoApp.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,4 +24,20 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+app.Run();*/
+
+namespace BackendInfoApp {
+    public class Program {
+        public static void Main(string[] args) {
+            CreateHostBuilder(args).Build().Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => {
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://0.0.0.0:8080");
+                    webBuilder.UseKestrel();
+                });
+    }
+}

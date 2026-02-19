@@ -4,6 +4,8 @@ services:
     build:
       context: .
       dockerfile: BackendInfoApp/Dockerfile
+    ports:
+      - "8080:8080"
   db:
     image: postgres
     restart: always

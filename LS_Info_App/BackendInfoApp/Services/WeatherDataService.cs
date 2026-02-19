@@ -25,6 +25,9 @@ namespace BackendInfoApp.Services {
 
         public GetWeatherDataDTO GetLatest() {
             WeatherDataEntity oEntity = oRepository.GetWeatherDataService();
+            if (oEntity == null) {
+                return null;
+            }
             return oMapper.EntityToGetDTO(oEntity);
         }
 
